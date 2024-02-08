@@ -6,6 +6,6 @@ return [
         '/login'=>'LoginController@index'
     ],
     'post'=>[
-
+        '/login'=>"LoginController@store"
     ]
 ];
