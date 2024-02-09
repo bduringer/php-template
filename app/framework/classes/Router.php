@@ -30,6 +30,10 @@ class Router{
         $this->request = request();
         $this->routeFound($routes);
         [$controller,$method] = explode('@', $routes[$this->request][$this->path]);
+        if(str_contains($method,':')){
+            [$method,$auth] = explode(":",$method);
+            Auth::check($auth);
+        };
         $controllerNamespace = "app\\controllers\\{$controller}";
         $this->controllerFound($controllerNamespace,$controller,$method);
         $controllerInstance = new $controllerNamespace;
