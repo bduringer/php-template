@@ -7,6 +7,7 @@ class Engine{
     private ?string $layout;
     private ?string $content;
     private array $data;
+    private array $dependecies;
     private function load(){
         
         return !empty($this->content) ? $this->content : '';
@@ -16,6 +17,24 @@ class Engine{
         $this->layout = $layout;
         $this->data = $data;
         var_dump('chegou aqui');
+    }
+
+    public function dependecies(array $dependencies)
+    {
+        foreach ($dependencies as $dependency) {
+            $className = strtolower((new \ReflectionClass($dependency))->getShortName());
+            $this->dependecies[$className] = $dependency;
+            var_dump($this->dependecies);
+        }
+    }
+    public function __call(string $name, array $params){
+        if(!method_exists($this->dependecies['macros'],$name)){
+            throw new Exception("Macro $name does not exist");
+        }
+        if(empty($params)){
+            throw new Exception("Method $name needs params");
+        }
+        return $this->dependecies['macros']->$name($params[0]);
     }
     public function Render(string $view, array $data)
     {
