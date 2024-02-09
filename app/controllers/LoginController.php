@@ -32,7 +32,6 @@ class LoginController
         $_SESSION['logged'] = true;
         unset($userFound->password);
         $_SESSION['user'] = $userFound;
-
         return redirect('/dashboard');
 
     }
